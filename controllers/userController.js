@@ -1,20 +1,16 @@
 const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
-const nodemailer = require('nodemailer')
-const jwt = require('jsonwebtoken')
 
 const generateToken = require('../utils/generatetoken')
 const User = require('../models/userModel')
-const Notification = require('../models/notificationModel')
-const { forgotPasswordTemplate, createdUser } = require('../utils/userUtil')
+// const { forgotPasswordTemplate, createdUser } = require('../utils/userUtil')
 
 //@desc    Register user & get token
 //@route   POST /api/users/register
 //@access  Public
 
 const registerUser = asyncHandler(async (req, res) => {
-  let { email, password, passwordCheck, displayName, roles, phoneNumber } =
-    req.body
+  let { email, password, firstName, lastName, phoneNumber } = req.body
 
   if (!displayName) {
     displayName = email
@@ -34,44 +30,14 @@ const registerUser = asyncHandler(async (req, res) => {
     })
   } else {
     const user = await User.create({
-      displayName,
+      firstName,
       email,
       password,
-      roles,
+      lastName,
       phoneNumber,
     })
 
     if (user) {
-      const notify = await Notification.create({
-        user: user._id,
-        message: 'your account has been successfully created',
-        isSeen: false,
-      })
-
-      var transporter = nodemailer.createTransport({
-        host: 'mail.midraconsulting.com',
-        port: 8889,
-        secure: false, // upgrade later with STARTTLS
-        auth: {
-          user: 'bobby@midraconsulting.com',
-          pass: '1nt3n@t10n@l',
-        },
-      })
-
-      let data = createdUser(user.displayName)
-
-      const mailOptions = {
-        from: 'bobby@midraconsulting.com', // sender address
-        to: user.email, // list of receivers
-        subject: 'Created an account', // Subject line
-        html: data, // plain text body
-      }
-
-      transporter.sendMail(mailOptions, function (err, info) {
-        if (err) console.log(err)
-        else console.log(info)
-      })
-
       res.status(201).json({
         _id: user._id,
         displayName: user.displayName,

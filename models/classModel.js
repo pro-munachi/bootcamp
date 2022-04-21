@@ -14,10 +14,6 @@ const classSchema = mongoose.Schema(
       required: true,
     },
 
-    dispatcherId: {
-      type: String,
-    },
-
     students: [
       {
         name: { type: mongoose.Schema.Types.ObjectId, required: true },
