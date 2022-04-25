@@ -16,9 +16,6 @@ const registerUser = asyncHandler(async (req, res) => {
     displayName = email
   }
 
-  const salt = await bcrypt.genSalt()
-  const passwordHash = await bcrypt.hash(password, salt)
-
   const userExists = await User.findOne({ email })
 
   const number = await User.findOne({ phoneNumber })
