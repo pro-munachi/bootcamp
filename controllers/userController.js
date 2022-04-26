@@ -1,4 +1,3 @@
-const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
 
 const generateToken = require('../utils/generatetoken')
