@@ -23,6 +23,16 @@ const classSchema = mongoose.Schema(
       required: true,
     },
 
+    name: {
+      type: String,
+      required: true,
+    },
+
+    description: {
+      type: String,
+      required: true,
+    },
+
     hasStarted: {
       type: Boolean,
       default: false,
@@ -30,7 +40,8 @@ const classSchema = mongoose.Schema(
 
     students: [
       {
-        name: { type: mongoose.Schema.Types.ObjectId, required: true },
+        id: { type: mongoose.Schema.Types.ObjectId },
+        name: { type: String },
       },
     ],
 
@@ -41,7 +52,6 @@ const classSchema = mongoose.Schema(
 
     isDeleted: {
       type: Boolean,
-      required: true,
       default: false,
     },
   },

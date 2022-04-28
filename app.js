@@ -44,7 +44,8 @@ mongoose.connect(
 
 // setup routes
 
-// app.use('/users', require('./routes/userRouter'))
+app.use('/users', require('./routes/userRouter'))
+app.use('/class', require('./routes/classRouter'))
 
 app.use(express.static(path.join(__dirname, '/build')))
 app.get('*', (req, res) =>
