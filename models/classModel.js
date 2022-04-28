@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const moment = require('moment')
 
 const classSchema = mongoose.Schema(
   {
@@ -14,6 +13,21 @@ const classSchema = mongoose.Schema(
       required: true,
     },
 
+    startDate: {
+      type: String,
+      required: true,
+    },
+
+    duration: {
+      type: String,
+      required: true,
+    },
+
+    hasStarted: {
+      type: Boolean,
+      default: false,
+    },
+
     students: [
       {
         name: { type: mongoose.Schema.Types.ObjectId, required: true },
@@ -23,7 +37,6 @@ const classSchema = mongoose.Schema(
     date: {
       type: String,
       required: true,
-      default: moment(new Date()).format('YYYYMMDD'),
     },
 
     isDeleted: {
