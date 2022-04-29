@@ -4,7 +4,7 @@ const cors = require('cors')
 const http = require('http')
 const path = require('path')
 var bodyParser = require('body-parser')
-const socketio = require('socket.io')
+const { Server } = require('socket.io')
 const WebSockets = require('./utils/WebSockets.js')
 
 require('dotenv').config()
@@ -53,7 +53,13 @@ app.use('/class', require('./routes/classRouter'))
 /** Create HTTP server. */
 const server = http.createServer(app)
 /** Create socket connection */
-global.io = socketio.listen(server)
+
+// Construct a socket
+const io = new Server(server)
+
+// Bind the socket to your created http server.
+global.io = io.listen(server)
+
 global.io.on('connection', WebSockets.connection)
 
 app.use(express.static(path.join(__dirname, '/build')))
