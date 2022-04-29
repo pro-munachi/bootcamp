@@ -1,8 +1,11 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const http = require('http')
 const path = require('path')
 var bodyParser = require('body-parser')
+const socketio = require('socket.io')
+const WebSockets = require('./utils/WebSockets.js')
 
 require('dotenv').config()
 
@@ -46,6 +49,12 @@ mongoose.connect(
 
 app.use('/users', require('./routes/userRouter'))
 app.use('/class', require('./routes/classRouter'))
+
+/** Create HTTP server. */
+const server = http.createServer(app)
+/** Create socket connection */
+global.io = socketio.listen(server)
+global.io.on('connection', WebSockets.connection)
 
 app.use(express.static(path.join(__dirname, '/build')))
 app.get('*', (req, res) =>
